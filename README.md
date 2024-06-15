@@ -10,10 +10,16 @@ by @alexis-mignon. These scripts were built for python 3+.
 ### Installation
 Begin by cloning this repo to your local machine:
 
-```git clone https://github.com/llevar/flickr_to_google_photos_migration```
+```git clone https://github.com/mpr90/flickr_to_google_photos_migration```
 
 At this point you might want to set up and activate a virtual environment to hold the installation dependencies 
-without compromising your other installs.
+without compromising your other installs. For example:
+
+```bash
+pip install virtualenv
+python -m venv env-flickr-google-migration
+source env-flickr-google-migration/bin/activate
+```
 
 Go to the cloned repo and install the required libraries:
 
@@ -36,6 +42,15 @@ You now want to authenticate with the Flickr API. It's best to follow this
 [guide](https://github.com/alexis-mignon/python-flickr-api/wiki/Flickr-API-Keys-and-Authentication). You want to save 
 the resulting authentication handler into ```auth/flickr_auth_handler```. The script ```build_flickr_verifier.py``` has
 some helpful commands that, together with the guide above, should get you a working verifier.
+
+```bash
+export FLICKR_API_KEY=my_key
+export FLICKR_API_SECRET=my_secret
+build_flickr_verifier.py
+```
+
+Copy and paste the URL into a browser and authenticate/grant permissions. Then copy the final hex value and paste back 
+into console window. This will generate a file ```flickr_credentials.dat``` which you need to move to the file ```auth/flickr_auth_handler```.
 
 You now want to set up your access to the Google Photos API. Google's [page](https://developers.google.com/photos/) 
 for the API has a number of useful guides that will help you get set up. You need to set up a project and user with 
@@ -85,18 +100,23 @@ before running the script using the values you get when you activate your Flickr
 ```bash
 export FLICKR_API_KEY=my_key
 export FLICKR_API_SECRET=my_secret
-python build_migration_photos_list.py
 ```
 
-This script walks through all the albums and builds a list of photos that we will later use to download these photos
+The ```python build_migration_photos_list.py``` script walks through all the albums and builds a list of photos that we will later use to download these photos
 and upload them to Google.  If available, tags on the photo in Flickr will be used as the description of the photo in 
 Google, otherwise the title in Flickr is used as the description.
 
 To make the process restartable, we'll use Redis to record the albums that have been retrieved from Flickr.  
-Fire up your own redis instance using docker:
+Fire up your own redis instance using docker (use [colima](https://github.com/abiosoft/colima) to enable docker on Mac):
 
 ```bash
 docker run --name my-redis -p 6379:6379 --restart always --detach redis
+```
+
+Now run the script to grab all the data from flickr:
+
+```bash
+python build_migration_photos_list.py
 ```
 
 For each album, a file named `photosets-queue/photoset-${album-id}-${# of photos}.pickle` will be created and an entry
