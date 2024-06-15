@@ -19,7 +19,8 @@ def authorize_with_google():
 def get_google_photos_service(google_creds):
     return build('photoslibrary', 'v1',
                  http=google_creds.authorize(Http()),
-                 cache_discovery=False)
+                 cache_discovery=False,
+                 static_discovery=False)
 
 
 def find_album_on_google(album_title):
