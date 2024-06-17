@@ -1,6 +1,7 @@
 auth/*
 photos_to_move.pickle
 celery/
+control/
 __pycache__/*
 .idea/*
 google_test.py
