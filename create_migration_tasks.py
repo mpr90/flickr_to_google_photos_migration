@@ -1,6 +1,13 @@
 from celery_migration_app import migrate_photo
 import pickle
 import os
+import sys
+
+dryrun = False
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == "-n":
+        dryrun = True
 
 for file in os.listdir("photosets/"):
     if file.endswith(".pickle"):
@@ -14,5 +21,8 @@ for file in os.listdir("photosets/"):
                 photo['photoUrl'],
                 photo['album'],
                 photo['photoTags'] or photo['photoTitle'],
+                dryrun,
             )
+
+        os.rename(f"photosets/{file}", f"photosets-complete/{file}")
 
