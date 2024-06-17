@@ -12,6 +12,7 @@ def build_album_cache(service):
         album_list_resp = album_list_req.execute()
         album_list = album_list_resp.get('albums', [])
         for album in album_list:
+            print("Caching album " + album['title'])
             if r.get(album['title']) is None:
                 r.set(album['title'], album['id'])
 
