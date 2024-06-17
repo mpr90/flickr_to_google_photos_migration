@@ -132,6 +132,15 @@ python create_album_cache.py
 
 This will find all of the existing albums in Google and create an entry in Redis.
 
+### Creating photo cache
+To speed up the process of identifying existing photos in Google, a local cache of Google photo filenames will created.
+
+```bash
+python create_photo_cache.py
+```
+
+This will find all of the existing albums in Google and create an entry in Redis.
+
 ### Creating migration tasks
 To manage the orderly download/upload of photos between providers, and allow one to stop and resume the process we will
 be using [Celery](https://github.com/celery/celery), which is a python queue-based task manager. Celery supports many
