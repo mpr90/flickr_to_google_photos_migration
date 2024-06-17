@@ -5,6 +5,7 @@ __pycache__/*
 .idea/*
 google_test.py
 venv/
+.venv/
 flickr.sh
 photosets-complete/
 photosets-queue/
