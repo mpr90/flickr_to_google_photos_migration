@@ -27,6 +27,10 @@ def find_album_on_google(album_title):
     return r.get(album_title)
 
 
+def find_photo_on_google(photo_filename):
+    return r.get(photo_filename)
+
+
 def create_album_on_google(service, album_title):
     albums = service.albums()
     new_album = albums.create(body={"album": {"title": album_title}}).execute()
@@ -65,6 +69,15 @@ def upload_photo_to_google(google_auth, service, album_id, photo_data,
         add_photo_resp = add_photo_req.execute()
 
         return add_photo_resp
+
+
+def add_existing_photo_to_google_album(service, album_id, photo_id):
+    albums = service.albums()
+
+    add_photo_req = albums.batchAddMediaItems(albumId=album_id, body=dict(mediaItemIds=photo_id))
+    add_photo_resp = add_photo_req.execute()
+
+    return add_photo_resp
 
 
 def get_photo_from_flickr(photo_url):
