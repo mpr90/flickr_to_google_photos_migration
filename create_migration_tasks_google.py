@@ -9,11 +9,16 @@ if len(sys.argv) > 1:
     if sys.argv[1] == "-n":
         dryrun = True
 
+print("Creating Google Photos migration tasks...")
+if dryrun:
+    print("  dryrun mode")
+
 for file in os.listdir("photosets/"):
     if file.endswith(".pickle"):
 
         with open(f"photosets/{file}", "rb") as photo_tasks_file:
             my_photos = pickle.load(photo_tasks_file)
+            print("  Processing file 'photosets/%s' with %d photos" % (file, len(my_photos)))
 
         for photo in my_photos:
             migrate_photo_to_google.delay(
