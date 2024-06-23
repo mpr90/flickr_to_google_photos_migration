@@ -159,10 +159,10 @@ mv photosets-queue/*.pickle photosets/
 
 and generate tasks by running:
 
-```python create_migration_tasks.py``` 
+```python create_migration_tasks_google.py``` 
 
 This script will read the pickle files in ```photosets/*.pickle``` directory and create a separate Celery task for each photo.
-The tasks end up as files inside the ```celery/out``` folder.  A task's job is to migrate a single photo from Flickr to Google Photos. 
+The tasks end up as files inside the ```celery/out``` folder.  Each task's job is to migrate a single photo from Flickr to Google Photos. 
 
 
 ### Running the migration

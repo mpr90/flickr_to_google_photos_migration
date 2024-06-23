@@ -27,7 +27,7 @@ r = redis.Redis(host='0.0.0.0', port=6379, db=0, decode_responses=True)
 @app.task(autoretry_for=(RequestException, HttpError),
           retry_backoff=True,
           retry_kwargs={'max_retries': 20})
-def migrate_photo(photo_title, photo_url, album_title, photo_tags, dryrun):
+def migrate_photo_to_google(photo_title, photo_url, album_title, photo_tags, dryrun):
     google_creds = authorize_with_google()
     service = get_google_photos_service(google_creds)
 

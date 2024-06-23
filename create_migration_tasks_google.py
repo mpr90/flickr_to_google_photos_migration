@@ -1,4 +1,4 @@
-from celery_migration_app import migrate_photo
+from celery_migration_app import migrate_photo_to_google
 import pickle
 import os
 import sys
@@ -16,7 +16,7 @@ for file in os.listdir("photosets/"):
             my_photos = pickle.load(photo_tasks_file)
 
         for photo in my_photos:
-            migrate_photo.delay(
+            migrate_photo_to_google.delay(
                 photo['photoTitle'],
                 photo['photoUrl'],
                 photo['album'],
