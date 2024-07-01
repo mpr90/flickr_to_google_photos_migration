@@ -7,6 +7,8 @@ import urllib
 from io import BytesIO
 from pathlib import Path
 import redis
+import os
+import re
 
 r = redis.Redis(host='0.0.0.0', port=6379, db=0, decode_responses=True)
 
@@ -85,4 +87,22 @@ def get_photo_from_flickr(photo_url):
     return BytesIO(photo_url_obj.read())
 
 
+def set_image_type_extension_if_missing(file_path, new_extension):
+    base_name, ext = os.path.splitext(file_path)
+    if not ext.upper() in ['.JPG', '.JPEG', '.HEIC', '.PNG', '.TIF', '.TIFF', '.GIF']:
+        new_file_path = file_path + "." + new_extension
+    else:
+        new_file_path = file_path
+    return new_file_path
+
+
+# if album name ends with <space>+<digits> (i.e. year), move digits to beginning of name
+def album_name_adjust(name):
+    res = re.search(r' \d+$', name)
+    if bool(res):
+        match = res.group()
+        new_name = match[1:] + " " + name[:-len(match)]
+        return new_name
+    else:
+        return name
 
